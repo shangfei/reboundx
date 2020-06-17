@@ -89,6 +89,11 @@ void rebx_register_default_params(struct rebx_extras* rebx){
     rebx_register_param(rebx, "luminosity", REBX_TYPE_DOUBLE);
     rebx_register_param(rebx, "tides_Omega", REBX_TYPE_DOUBLE);
     rebx_register_param(rebx, "tides_lambda2", REBX_TYPE_DOUBLE);
+    rebx_register_param(rebx, "DeltaT", REBX_TYPE_DOUBLE);
+    rebx_register_param(rebx, "alpha", REBX_TYPE_DOUBLE);
+    rebx_register_param(rebx, "r0", REBX_TYPE_DOUBLE);
+    rebx_register_param(rebx, "a1", REBX_TYPE_DOUBLE);
+    rebx_register_param(rebx, "a2", REBX_TYPE_DOUBLE);
 }
 
 void rebx_register_param(struct rebx_extras* const rebx, const char* name, enum rebx_param_type type){
@@ -260,6 +265,10 @@ struct rebx_force* rebx_load_force(struct rebx_extras* const rebx, const char* n
     else if (strcmp(name, "tides_constant_time_lag") == 0){
         force->update_accelerations = rebx_tides_constant_time_lag;
         force->force_type = REBX_FORCE_VEL;
+    }
+    else if (strcmp(name, "outgassing") == 0){
+        force->update_accelerations = rebx_outgassing_force;
+        force->force_type = REBX_FORCE_POS;
     }
     else{
         char str[300];
